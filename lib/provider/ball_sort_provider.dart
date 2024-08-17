@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class BallSortProvider extends ChangeNotifier {
   List<String> tube1Balls = [];
@@ -10,6 +11,7 @@ class BallSortProvider extends ChangeNotifier {
   int? selectedTubeID;
   String? selectedBallImagePath;
   Offset? selectedBallPosition;
+  Map<int, bool> isTopBallVisible = {1: true, 2: true, 3: true, 4: true, 5: true};
 
   BallSortProvider() {
     List<String> ballImages = [
@@ -38,6 +40,7 @@ class BallSortProvider extends ChangeNotifier {
       selectedTubeID = tubeID;
       selectedBallImagePath = getTubeBalls(tubeID).isNotEmpty ? getTubeBalls(tubeID).first : null;
       selectedBallPosition = position;
+      isTopBallVisible[tubeID] = !isTopBallVisible[tubeID]!;
     } else {
       moveBall(selectedTubeID!, tubeID);
       selectedTubeID = null;
@@ -54,6 +57,7 @@ class BallSortProvider extends ChangeNotifier {
     if (fromTubeBalls.isNotEmpty && toTubeBalls.length < 4) {
       String ball = fromTubeBalls.removeAt(0);
       toTubeBalls.insert(0, ball);
+      isTopBallVisible[fromTubeID] = true;
       notifyListeners();
     }
   }

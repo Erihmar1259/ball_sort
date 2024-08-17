@@ -1,9 +1,10 @@
+import 'package:ball_sort/provider/ball_sort_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
 import 'ball.dart';
 import 'draggable_ball.dart';
-import 'provider/ball_sort_provider.dart';
 
 class Tube extends StatelessWidget {
   final int tubeID;
@@ -15,6 +16,7 @@ class Tube extends StatelessWidget {
       builder: (context, provider, child) {
         List<String> balls = provider.getTubeBalls(tubeID);
         bool isSelected = provider.selectedTubeID == tubeID;
+        bool isTopBallVisible = provider.isTopBallVisible[tubeID] ?? true;
 
         return GestureDetector(
           onTapDown: (details) {
@@ -38,20 +40,20 @@ class Tube extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: balls.map((imagePath) {
-                    return DraggableBall(imagePath: imagePath, id: tubeID);
+                    return (isSelected && balls.first.isNotEmpty)?Container():DraggableBall(imagePath: imagePath, id: tubeID);
                   }).toList(),
                 ),
               ),
-              if (isSelected && balls.isNotEmpty)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Ball(imagePath: balls.first),
-                  ),
-                ),
+              // if (isSelected && balls.isNotEmpty)
+              //   Positioned(
+              //     top: 0,
+              //     left: 0,
+              //     right: 0,
+              //     child: Align(
+              //       alignment: Alignment.topCenter,
+              //       child: isTopBallVisible ? Ball(imagePath: balls.first) : Container(),
+              //     ),
+              //   ),
             ],
           ),
         );
