@@ -18,44 +18,56 @@ class Tube extends StatelessWidget {
         bool isSelected = provider.selectedTubeID == tubeID;
         bool isTopBallVisible = provider.isTopBallVisible[tubeID] ?? true;
 
-        return GestureDetector(
-          onTapDown: (details) {
-            provider.selectTube(tubeID, details.globalPosition);
-          },
-          child: Stack(
-            children: [
-              Container(
-                width: 50.w,
-                height: 230.h,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: isSelected ? Colors.blue : Colors.grey, width: 2),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(50),
-                    bottomRight: Radius.circular(50),
-                    topRight: Radius.circular(10),
-                    topLeft: Radius.circular(10),
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            GestureDetector(
+              onTapDown: (details) {
+                provider.selectTube(tubeID, details.globalPosition);
+              },
+              child: Stack(
+                children: [
+                  Container(
+                    width: 50.w,
+                    height: 180.h,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: isSelected ? Colors.blue : Colors.grey, width: 2),
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(50),
+                        bottomRight: Radius.circular(50),
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: balls.map((imagePath) {
+                        bool isTopBall = balls.isNotEmpty && balls.first == imagePath;
+                        return isTopBall && !isTopBallVisible
+                            ? Container(width: 40.w, height: 40.h)
+                            : DraggableBall(imagePath: imagePath, id: tubeID);
+                      }).toList(),
+                      //   return DraggableBall(imagePath: imagePath, id: tubeID);
+                      // }).toList(),
+                    ),
                   ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: balls.map((imagePath) {
-                    return (isSelected && balls.first.isNotEmpty)?Container():DraggableBall(imagePath: imagePath, id: tubeID);
-                  }).toList(),
-                ),
+                  if (isSelected && balls.isNotEmpty)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Ball(imagePath: balls.first),
+                      ),
+                    ),
+                ],
               ),
-              // if (isSelected && balls.isNotEmpty)
-              //   Positioned(
-              //     top: 0,
-              //     left: 0,
-              //     right: 0,
-              //     child: Align(
-              //       alignment: Alignment.topCenter,
-              //       child: isTopBallVisible ? Ball(imagePath: balls.first) : Container(),
-              //     ),
-              //   ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );
