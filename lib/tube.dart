@@ -18,7 +18,6 @@ class Tube extends StatelessWidget {
         bool isSelected = provider.selectedTubeID == tubeID;
         bool isTopBallVisible = provider.isTopBallVisible[tubeID] ?? true;
 
-
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -44,17 +43,17 @@ class Tube extends StatelessWidget {
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: balls.map((imagePath) {
-                        bool isTopBall = balls.isNotEmpty && balls.first == imagePath;
+                      children: balls.asMap().entries.map((entry) {
+                        int index = entry.key;
+                        String imagePath = entry.value;
+                        bool isTopBall = index == 0;
                         return isTopBall && !isTopBallVisible
                             ? Container(width: 40.w, height: 40.h)
                             : DraggableBall(imagePath: imagePath, id: tubeID);
                       }).toList(),
-                      //   return DraggableBall(imagePath: imagePath, id: tubeID);
-                      // }).toList(),
                     ),
                   ),
-                  if (isSelected && balls.isNotEmpty)
+                  if (isSelected && balls.isNotEmpty && !isTopBallVisible)
                     Positioned(
                       top: 0,
                       left: 0,

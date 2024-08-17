@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class BallSortProvider extends ChangeNotifier {
@@ -12,6 +11,7 @@ class BallSortProvider extends ChangeNotifier {
   String? selectedBallImagePath;
   Offset? selectedBallPosition;
   Map<int, bool> isTopBallVisible = {1: true, 2: true, 3: true, 4: true, 5: true};
+  Map<int, int> tapCount = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
 
   BallSortProvider() {
     List<String> ballImages = [
@@ -41,11 +41,26 @@ class BallSortProvider extends ChangeNotifier {
       selectedBallImagePath = getTubeBalls(tubeID).isNotEmpty ? getTubeBalls(tubeID).first : null;
       selectedBallPosition = position;
       isTopBallVisible[tubeID] = !isTopBallVisible[tubeID]!;
+      tapCount[tubeID] = 1;
+    } else if (selectedTubeID == tubeID) {
+      tapCount[tubeID] = (tapCount[tubeID] ?? 0) + 1;
+      if (tapCount[tubeID] == 2) {
+        isTopBallVisible[tubeID] = true;
+      } else if (tapCount[tubeID] == 3) {
+        isTopBallVisible[tubeID] = true;
+        selectedTubeID = null;
+        selectedBallImagePath = null;
+        selectedBallPosition = null;
+        tapCount[tubeID] = 0;
+      }
     } else {
-      moveBall(selectedTubeID!, tubeID);
-      selectedTubeID = null;
-      selectedBallImagePath = null;
-      selectedBallPosition = null;
+      if (selectedTubeID != null) {
+        moveBall(selectedTubeID!, tubeID);
+        tapCount[selectedTubeID!] = 0; // Reset tap count for the previous tube
+        selectedTubeID = null;
+        selectedBallImagePath = null;
+        selectedBallPosition = null;
+      }
     }
     notifyListeners();
   }
