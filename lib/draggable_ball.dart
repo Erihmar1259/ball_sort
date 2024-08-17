@@ -33,9 +33,9 @@ class DraggableBall extends StatelessWidget {
         return isTopBall
             ? Draggable<Map<String, dynamic>>(
                 data: {'imagePath': imagePath, 'fromTubeID': id},
-                child: Ball(imagePath: imagePath),
                 feedback: Ball(imagePath: imagePath),
                 childWhenDragging: Container(),
+                child: Ball(imagePath: imagePath),
               )
             : Ball(imagePath: imagePath);
       },
