@@ -7,7 +7,7 @@ class DraggableBall extends StatelessWidget {
   final String imagePath;
   final int id;
 
-  DraggableBall({required this.imagePath, required this.id});
+  const DraggableBall({super.key, required this.imagePath, required this.id});
 
   @override
   Widget build(BuildContext context) {
