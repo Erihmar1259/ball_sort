@@ -1,5 +1,6 @@
-import 'package:ball_sort/ball_sort.dart';
+import 'package:ball_sort/screens/game_widget/ball_sort.dart';
 import 'package:ball_sort/provider/ball_sort_provider.dart';
+import 'package:ball_sort/screens/intro/intro_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +25,9 @@ class MyApp extends StatelessWidget {
                 create: (context) => BallSortProvider()),
 
           ],
-          child:  MaterialApp(
+          child:  const MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: BallSortScreen(), // Pass the navigatorKey to SplashScreen
+            home: IntroScreen(), // Pass the navigatorKey to SplashScreen
           ),
         );
       },

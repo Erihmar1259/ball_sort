@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../provider/ball_sort_provider.dart';
 import 'ball.dart';
-import 'provider/ball_sort_provider.dart';
 
 class DraggableBall extends StatelessWidget {
   final String imagePath;
