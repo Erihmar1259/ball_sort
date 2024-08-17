@@ -1,6 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ball_sort/constants/color_const.dart';
 import 'package:ball_sort/provider/ball_sort_provider.dart';
+import 'package:ball_sort/screens/intro/intro_screen.dart';
+import 'package:ball_sort/screens/menu/menu_screen.dart';
+import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +29,7 @@ class Tube extends StatelessWidget {
             GestureDetector(
               onTapDown: (details) {
                 provider.selectTube(tubeID, details.globalPosition,context);
-                if(provider.win==true){
+                if(provider.win==false){
                   AwesomeDialog(
                     context: context,
                     dialogType: DialogType.success,
@@ -34,8 +37,21 @@ class Tube extends StatelessWidget {
                     title: 'Congratulations!',
                     desc: 'You have sorted all the balls correctly!',
                     showCloseIcon: true,
+                    // btnOkOnPress: () {
+                    //   provider.init();
+                    // },
 
-                    // btnOk: Image.asset('assets/images/home_btn.webp', width: 30.w, height: 30.h),
+                     btnOk: GestureDetector(
+                         onTap: (){
+                           context.navigateAndRemoveUntil(const IntroScreen(),false);
+                         },
+                         child: Image.asset('assets/images/home_btn.webp', width: 30.w, height: 30.h)),
+                    btnCancel: GestureDetector(
+                        onTap: (){
+                          provider.init();
+                          Navigator.pop(context);
+                        },
+                        child: Image.asset('assets/images/replay_icon.webp', width: 30.w, height: 30.h)),
                     // btnCancel: Image.asset('assets/images/replay_icon.webp', width: 30.w, height: 30.h),
                   ).show();
                 }

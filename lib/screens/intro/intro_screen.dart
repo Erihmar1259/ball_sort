@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:ball_sort/provider/ball_sort_provider.dart';
 import 'package:ball_sort/screens/game_widget/ball_sort.dart';
+import 'package:ball_sort/screens/menu/menu_screen.dart';
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:ball_sort/widgets/custom_circle_loading.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -172,7 +173,7 @@ class _IntroScreenState extends State<IntroScreen> {
             kSizedBoxH30,
             GestureDetector(
               onTap: () {
-                context.navigateAndRemoveUntil(const BallSortScreen(), true);
+                context.navigateAndRemoveUntil(const GameMenuScreen(), true);
               },
               child: Container(
 
