@@ -8,17 +8,6 @@ class Ball extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 30.w,
-      height: 30.h,
-      margin: EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(
-          image: AssetImage(imagePath),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
+    return Image.asset(imagePath, width: 40.w, height: 40.h);
   }
 }

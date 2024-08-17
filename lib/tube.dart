@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'ball.dart';
 import 'draggable_ball.dart';
 import 'provider/ball_sort_provider.dart';
 
@@ -12,47 +13,50 @@ class Tube extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<BallSortProvider>(
       builder: (context, provider, child) {
-        List<String> balls;
-        if (tubeID == 1) {
-          balls = provider.tube1Balls;
-        } else if (tubeID == 2) {
-          balls = provider.tube2Balls;
-        } else if (tubeID == 3) {
-          balls = provider.tube3Balls;
-        } else if (tubeID == 4) {
-          balls = provider.tube4Balls;
-        } else if (tubeID == 5) {
-          balls = provider.tube5Balls;
-        } else {
-          balls = [];
-        }
+        List<String> balls = provider.getTubeBalls(tubeID);
+        bool isSelected = provider.selectedTubeID == tubeID;
 
-        return DragTarget<Map<String, dynamic>>(
-          onWillAccept: (data) => true,
-          onAccept: (data) {
-            bool added = provider.addBallToTube(data['imagePath'], tubeID);
-            if (!added) {
-              // Animate ball back to its original tube
-              provider.addBallToTube(data['imagePath'], data['fromTubeID']);
-            } else {
-              provider.dragComplete(data['imagePath'], data['fromTubeID']);
-            }
+        return GestureDetector(
+          onTapDown: (details) {
+            provider.selectTube(tubeID, details.globalPosition);
           },
-          builder: (context, candidateData, rejectedData) {
-            return Container(
-              width: 50.w,
-              height: 180.h,
-              padding: const EdgeInsets.only(bottom: 10),
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage("assets/images/tube.webp"), fit: BoxFit.cover),
+          child: Stack(
+            children: [
+              Container(
+                width: 50.w,
+                height: 180.h,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: isSelected ? Colors.blue : Colors.black,
+                    width: 2,
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: balls.map((imagePath) {
+                    return DraggableBall(imagePath: imagePath, id: tubeID);
+                  }).toList(),
+                ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: balls.map((imagePath) => DraggableBall(imagePath: imagePath, id: tubeID)).toList(),
-              ),
-            );
-          },
+              // if (isSelected && balls.isNotEmpty)
+              //   Positioned(
+              //     top: -30.h,
+              //     left: 0,
+              //     right: 0,
+              //     child: Align(
+              //       alignment: Alignment.topCenter,
+              //       child: Ball(imagePath: balls.first),
+              //     ),
+              //   ),
+            ],
+          ),
         );
       },
     );

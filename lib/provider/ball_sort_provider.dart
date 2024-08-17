@@ -7,6 +7,9 @@ class BallSortProvider extends ChangeNotifier {
   List<String> tube3Balls = [];
   List<String> tube4Balls = [];
   List<String> tube5Balls = [];
+  int? selectedTubeID;
+  String? selectedBallImagePath;
+  Offset? selectedBallPosition;
 
   BallSortProvider() {
     List<String> ballImages = [
@@ -30,43 +33,45 @@ class BallSortProvider extends ChangeNotifier {
     tube5Balls = [];
   }
 
-  void dragComplete(String imagePath, int fromTubeID) {
-    if (fromTubeID == 1) {
-      tube1Balls.remove(imagePath);
-    } else if (fromTubeID == 2) {
-      tube2Balls.remove(imagePath);
-    } else if (fromTubeID == 3) {
-      tube3Balls.remove(imagePath);
-    } else if (fromTubeID == 4) {
-      tube4Balls.remove(imagePath);
-    } else if (fromTubeID == 5) {
-      tube5Balls.remove(imagePath);
+  void selectTube(int tubeID, Offset position) {
+    if (selectedTubeID == null) {
+      selectedTubeID = tubeID;
+      selectedBallImagePath = getTubeBalls(tubeID).isNotEmpty ? getTubeBalls(tubeID).first : null;
+      selectedBallPosition = position;
+    } else {
+      moveBall(selectedTubeID!, tubeID);
+      selectedTubeID = null;
+      selectedBallImagePath = null;
+      selectedBallPosition = null;
     }
     notifyListeners();
   }
 
-  bool addBallToTube(String imagePath, int toTubeID) {
-    if (toTubeID == 1 && tube1Balls.length < 4) {
-      tube1Balls.insert(0, imagePath);
+  void moveBall(int fromTubeID, int toTubeID) {
+    List<String> fromTubeBalls = getTubeBalls(fromTubeID);
+    List<String> toTubeBalls = getTubeBalls(toTubeID);
+
+    if (fromTubeBalls.isNotEmpty && toTubeBalls.length < 4) {
+      String ball = fromTubeBalls.removeAt(0);
+      toTubeBalls.insert(0, ball);
       notifyListeners();
-      return true;
-    } else if (toTubeID == 2 && tube2Balls.length < 4) {
-      tube2Balls.insert(0, imagePath);
-      notifyListeners();
-      return true;
-    } else if (toTubeID == 3 && tube3Balls.length < 4) {
-      tube3Balls.insert(0, imagePath);
-      notifyListeners();
-      return true;
-    } else if (toTubeID == 4 && tube4Balls.length < 4) {
-      tube4Balls.insert(0, imagePath);
-      notifyListeners();
-      return true;
-    } else if (toTubeID == 5 && tube5Balls.length < 4) {
-      tube5Balls.insert(0, imagePath);
-      notifyListeners();
-      return true;
     }
-    return false;
+  }
+
+  List<String> getTubeBalls(int tubeID) {
+    switch (tubeID) {
+      case 1:
+        return tube1Balls;
+      case 2:
+        return tube2Balls;
+      case 3:
+        return tube3Balls;
+      case 4:
+        return tube4Balls;
+      case 5:
+        return tube5Balls;
+      default:
+        return [];
+    }
   }
 }
