@@ -27,16 +27,16 @@ class DraggableBall extends StatelessWidget {
         } else {
           balls = [];
         }
-///
+        ///
         bool isTopBall = balls.isNotEmpty && balls.first == imagePath;
 
         return isTopBall
             ? Draggable<Map<String, dynamic>>(
-                data: {'imagePath': imagePath, 'fromTubeID': id},
-                feedback: Ball(imagePath: imagePath),
-                childWhenDragging: Container(),
-                child: Ball(imagePath: imagePath),
-              )
+          data: {'imagePath': imagePath, 'fromTubeID': id},
+          feedback: Ball(imagePath: imagePath),
+          childWhenDragging: Container(),
+          child: Ball(imagePath: imagePath),
+        )
             : Ball(imagePath: imagePath);
       },
     );

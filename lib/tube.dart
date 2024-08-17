@@ -24,18 +24,15 @@ class Tube extends StatelessWidget {
             children: [
               Container(
                 width: 50.w,
-                height: 180.h,
+                height: 230.h,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: isSelected ? Colors.blue : Colors.black,
-                    width: 2,
-                  ),
+                  border: Border.all(color: isSelected ? Colors.blue : Colors.grey, width: 2),
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
                     bottomLeft: Radius.circular(50),
                     bottomRight: Radius.circular(50),
+                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(10),
                   ),
                 ),
                 child: Column(
@@ -45,16 +42,16 @@ class Tube extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              // if (isSelected && balls.isNotEmpty)
-              //   Positioned(
-              //     top: -30.h,
-              //     left: 0,
-              //     right: 0,
-              //     child: Align(
-              //       alignment: Alignment.topCenter,
-              //       child: Ball(imagePath: balls.first),
-              //     ),
-              //   ),
+              if (isSelected && balls.isNotEmpty)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Ball(imagePath: balls.first),
+                  ),
+                ),
             ],
           ),
         );

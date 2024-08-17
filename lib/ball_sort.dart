@@ -37,12 +37,7 @@ class _BallSortScreenState extends State<BallSortScreen> {
                 ],
               ),
             ),
-            if (provider.selectedBallImagePath != null && provider.selectedBallPosition != null)
-              Positioned(
-                left: provider.selectedBallPosition!.dx ,
-                top: provider.selectedBallPosition!.dy - 20.h,
-                child: Ball(imagePath: provider.selectedBallImagePath!),
-              ),
+
           ],
         ),
       ),
