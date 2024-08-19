@@ -1,6 +1,8 @@
 import 'dart:io';
 
-import 'package:ball_sort/screens/game_widget/ball_sort.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:ball_sort/screens/game_widget/ball_sort_screen.dart';
+import 'package:ball_sort/screens/settings/settings_screen.dart';
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,15 +53,15 @@ class GameMenuScreen extends StatelessWidget {
             ),
           ],
         ),
-        // actions: [
-        //   IconButton(
-        //     iconSize: 40.sp,
-        //     icon: Image.asset('assets/images/setting_icon.webp'),
-        //     onPressed: () {
-        //       //provider.restartGame();
-        //     },
-        //   ),
-        // ],
+        actions: [
+          IconButton(
+            iconSize: 40.sp,
+            icon: Image.asset('assets/images/setting_icon.webp'),
+            onPressed: () {
+              context.navigateAndRemoveUntil(const SettingsScreen(), true);
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -75,16 +77,31 @@ class GameMenuScreen extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+               Padding(padding:EdgeInsets.symmetric(horizontal: 10.w,vertical: 15.h),
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+
+                   CustomText(text: "How to play?",color: whiteColor,),
+                   kSizedBoxH10,
+                   CustomText(text: "1. Tap the tube which you want to move the ball.",color: whiteColor,),
+                   CustomText(text: "2. Tap the tube where you want to place the ball.",color: whiteColor,),
+                   CustomText(text: "3. You can only move the ball to the empty tube or the tube that have free space.",color: whiteColor,maxLines: 3,),
+                 ],
+               ),
+               ),
               GestureDetector(
                 onTap: () {
+                  provider.setDifficultyLevel("easy");
                   context.navigateAndRemoveUntil(const BallSortScreen(), true);
                 },
                 child: Container(
 
                   margin: EdgeInsets.symmetric(horizontal: 15.w),
                   width: MediaQuery.of(context).size.width,
-                  height: 60.h,
+                  height: 65.h,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         image: const AssetImage('assets/images/game_btn.webp'),
@@ -102,13 +119,30 @@ class GameMenuScreen extends StatelessWidget {
               kSizedBoxH30,
               GestureDetector(
                 onTap: () {
-                  context.navigateAndRemoveUntil(const BallSortScreen(), true);
+                 if(provider.bestScore<10){
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.infoReverse,
+                      animType: AnimType.bottomSlide,
+                      title: 'Notice!',
+                      desc: 'You need to score at least 10 to unlock medium level',
+                      btnCancelOnPress: () {
+                        print('cancel');
+                      },
+                      btnOkOnPress: () {
+                        print('ok');
+                      },
+                    ).show();
+                  }else{
+                    provider.setDifficultyLevel("medium");
+                    context.navigateAndRemoveUntil(const BallSortScreen(), true);
+                 }
                 },
                 child: Container(
 
                   margin: EdgeInsets.symmetric(horizontal: 15.w),
                   width: MediaQuery.of(context).size.width,
-                  height: 60.h,
+                  height: 65.h,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         image: const AssetImage('assets/images/game_btn.webp'),
@@ -126,12 +160,29 @@ class GameMenuScreen extends StatelessWidget {
               kSizedBoxH30,
               GestureDetector(
                 onTap: () {
-                  context.navigateAndRemoveUntil(const BallSortScreen(), true);
+                 if(provider.bestScore<20){
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.infoReverse,
+                      animType: AnimType.bottomSlide,
+                      title: 'Notices',
+                      desc: 'You need to score at least 20 to unlock hard level',
+                      btnCancelOnPress: () {
+                        print('cancel');
+                      },
+                      btnOkOnPress: () {
+                        print('ok');
+                      },
+                    ).show();
+                 }else{
+                   provider.setDifficultyLevel("hard");
+                   context.navigateAndRemoveUntil(const BallSortScreen(), true);
+                 }
                 },
                 child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 15.w),
                   width: MediaQuery.of(context).size.width,
-                  height: 60.h,
+                  height: 65.h,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         image: const AssetImage('assets/images/game_btn.webp'),

@@ -1,12 +1,11 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:ball_sort/constants/color_const.dart';
-import 'package:ball_sort/provider/ball_sort_provider.dart';
-import 'package:ball_sort/screens/intro/intro_screen.dart';
-import 'package:ball_sort/screens/menu/menu_screen.dart';
+
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:awesome_dialog/awesome_dialog.dart'; // Import AwesomeDialog package
+import '../../provider/ball_sort_provider.dart';
+import '../intro/intro_screen.dart';
 import 'ball.dart';
 import 'draggable_ball.dart';
 
@@ -16,20 +15,61 @@ class Tube extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Consumer<BallSortProvider>(
       builder: (context, provider, child) {
         List<String> balls = provider.getTubeBalls(tubeID);
         bool isSelected = provider.selectedTubeID == tubeID;
         bool isTopBallVisible = provider.isTopBallVisible[tubeID] ?? true;
 
+        double tubeHeight = 180.h; // Use appropriate units
+        if (provider.difficultyLevel == 'medium') {
+          tubeHeight =190.h;
+        } else if (provider.difficultyLevel == 'hard') {
+          tubeHeight = 210.h;
+        }
+
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             GestureDetector(
+              // onTapUp: (details) {
+              //   if(provider.remainingTime==0) {
+              //
+              //     //  WidgetsBinding.instance.addPostFrameCallback((_) {
+              //     AwesomeDialog(
+              //       context: context,
+              //       dismissOnBackKeyPress: false,
+              //       dismissOnTouchOutside: false,
+              //
+              //       dialogType: DialogType.error,
+              //       animType: AnimType.bottomSlide,
+              //       title: 'Game Over',
+              //       desc: 'Time is up!',
+              //       showCloseIcon: true,
+              //       btnOk: GestureDetector(
+              //         onTap: () {
+              //           context.navigateAndRemoveUntil(IntroScreen(),false);
+              //         },
+              //         child: Image.asset('assets/images/home_btn.webp', width: 30.0, height: 30.0),
+              //       ),
+              //       btnCancel: GestureDetector(
+              //         onTap: () {
+              //           provider.init();
+              //           Navigator.pop(context);
+              //         },
+              //         child: Image.asset('assets/images/replay_icon.webp', width: 30.0, height: 30.0),
+              //       ),
+              //     ).show();
+              //     //});
+              //
+              //   }
+              // },
               onTapDown: (details) {
-                provider.selectTube(tubeID, details.globalPosition,context);
-                if(provider.win==false){
+                provider.selectTube(tubeID, details.globalPosition, context);
+                if (provider.win == true) {
+
                   AwesomeDialog(
                     context: context,
                     dialogType: DialogType.success,
@@ -37,34 +77,65 @@ class Tube extends StatelessWidget {
                     title: 'Congratulations!',
                     desc: 'You have sorted all the balls correctly!',
                     showCloseIcon: true,
-                    // btnOkOnPress: () {
-                    //   provider.init();
-                    // },
-
-                     btnOk: GestureDetector(
-                         onTap: (){
-                           context.navigateAndRemoveUntil(const IntroScreen(),false);
-                         },
-                         child: Image.asset('assets/images/home_btn.webp', width: 30.w, height: 30.h)),
+                    btnOk: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => IntroScreen()),
+                          (Route<dynamic> route) => false
+                        );
+                      },
+                      child: Image.asset('assets/images/home_btn.webp', width: 30.0, height: 30.0),
+                    ),
                     btnCancel: GestureDetector(
-                        onTap: (){
-                          provider.init();
-                          Navigator.pop(context);
-                        },
-                        child: Image.asset('assets/images/replay_icon.webp', width: 30.w, height: 30.h)),
-                    // btnCancel: Image.asset('assets/images/replay_icon.webp', width: 30.w, height: 30.h),
+                      onTap: () {
+                        provider.init();
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset('assets/images/replay_icon.webp', width: 30.0, height: 30.0),
+                    ),
                   ).show();
                 }
+                // if(provider.remainingTime==0) {
+                //
+                // //  WidgetsBinding.instance.addPostFrameCallback((_) {
+                //     AwesomeDialog(
+                //       context: context,
+                //       dismissOnBackKeyPress: false,
+                //       dismissOnTouchOutside: false,
+                //
+                //       dialogType: DialogType.error,
+                //       animType: AnimType.bottomSlide,
+                //       title: 'Game Over',
+                //       desc: 'Time is up!',
+                //       showCloseIcon: true,
+                //       btnOk: GestureDetector(
+                //         onTap: () {
+                //           context.navigateAndRemoveUntil(IntroScreen(),false);
+                //         },
+                //         child: Image.asset('assets/images/home_btn.webp', width: 30.0, height: 30.0),
+                //       ),
+                //       btnCancel: GestureDetector(
+                //         onTap: () {
+                //           provider.init();
+                //           Navigator.pop(context);
+                //         },
+                //         child: Image.asset('assets/images/replay_icon.webp', width: 30.0, height: 30.0),
+                //       ),
+                //     ).show();
+                //   //});
+                //
+                // }
+
               },
               child: Stack(
                 children: [
                   Container(
-                    width: 50.w,
-                    height: 180.h,
+                    width: 50.0,
+                    height: tubeHeight,
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: pinkColor.withOpacity(0.3),
-                      border: Border.all(color: isSelected ? yellowColor : whiteColor, width: 2),
+                      color: Colors.pink.withOpacity(0.3),
+                      border: Border.all(color: isSelected ? Colors.yellow : Colors.white, width: 2),
                       borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(50),
                         bottomRight: Radius.circular(50),
@@ -79,7 +150,7 @@ class Tube extends StatelessWidget {
                         String imagePath = entry.value;
                         bool isTopBall = index == 0;
                         return isTopBall && !isTopBallVisible
-                            ? SizedBox(width: 40.w, height: 40.h)
+                            ? SizedBox(width: 40.0, height: 40.0)
                             : DraggableBall(imagePath: imagePath, id: tubeID);
                       }).toList(),
                     ),

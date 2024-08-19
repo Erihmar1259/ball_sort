@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:ball_sort/provider/ball_sort_provider.dart';
-import 'package:ball_sort/screens/game_widget/ball_sort.dart';
+import 'package:ball_sort/screens/game_widget/ball_sort_screen.dart';
 import 'package:ball_sort/screens/menu/menu_screen.dart';
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:ball_sort/widgets/custom_circle_loading.dart';
@@ -15,6 +15,7 @@ import '../../constants/color_const.dart';
 import '../../constants/dimen_const.dart';
 import '../../utils/global.dart';
 import '../../widgets/custom_text.dart';
+import '../settings/settings_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -133,8 +134,52 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<BallSortProvider>(context);
     return Scaffold(
       backgroundColor: secondaryColor,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        // leading: IconButton(
+        //   iconSize: 40.sp,
+        //   icon: Image.asset('assets/images/back_btn.webp'),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
+        backgroundColor: Colors.transparent,
+        // title: Row(
+        //   crossAxisAlignment: CrossAxisAlignment.center,
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     CustomText(
+        //       text: "Score",
+        //       color: whiteColor,
+        //       fontSize: 20.sp,
+        //       fontWeight: FontWeight.bold,
+        //     ),
+        //     kSizedBoxW5,
+        //     Icon(Icons.star, color: Colors.yellow[600]),
+        //     kSizedBoxW5,
+        //     CustomText(
+        //       text: provider.bestScore.toString(),
+        //       fontWeight: FontWeight.bold,
+        //       color: whiteColor,
+        //       fontSize: 20.sp,
+        //     ),
+        //   ],
+        // ),
+        actions: [
+          IconButton(
+            iconSize: 40.sp,
+            icon: Image.asset('assets/images/setting_icon.webp'),
+            onPressed: () {
+              context.navigateAndRemoveUntil(const SettingsScreen(), true);
+            },
+          ),
+        ],
+      ),
+
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -150,8 +195,10 @@ class _IntroScreenState extends State<IntroScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomCircleLoading(type: Indicator.ballGridBeat,colors: [Colors.green,Colors.red,Colors.blue,Colors.yellow],width: 120.w,height: 130.h,),
-            kSizedBoxH30,
+            SizedBox(
+                height: 220.h,
+                child: CustomCircleLoading(type: Indicator.ballGridBeat,colors: [Colors.green,Colors.red,Colors.blue,Colors.yellow],width: 130.w,height: 130.h,)),
+kSizedBoxH20,
             Consumer<BallSortProvider>(
                 builder: (context, provider, _) => Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -164,13 +211,13 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
                     CustomText(
                       text: "${provider.bestScore}",
-                      color: Colors.yellow[900],
-                      fontSize: 25.sp,
+                      color: whiteColor,
+                      fontSize: 30.sp,
                       maxLines: 2,
                     ),
                   ],
                 )),
-            kSizedBoxH30,
+            kSizedBoxH20,
             GestureDetector(
               onTap: () {
                 context.navigateAndRemoveUntil(const GameMenuScreen(), true);
@@ -179,7 +226,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
                 margin: EdgeInsets.symmetric(horizontal: 15.w),
                 width: MediaQuery.of(context).size.width,
-                height: 60.h,
+                height: 65.h,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                       image: const AssetImage('assets/images/game_btn.webp'),
@@ -194,7 +241,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     )),
               ),
             ),
-            kSizedBoxH30,
+            kSizedBoxH20,
             GestureDetector(
               onTap: () {
                 exit(0);
@@ -202,7 +249,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 15.w),
                 width: MediaQuery.of(context).size.width,
-                height: 60.h,
+                height: 65.h,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                       image: const AssetImage('assets/images/game_btn.webp'),
