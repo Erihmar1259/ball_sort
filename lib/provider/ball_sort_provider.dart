@@ -49,8 +49,8 @@ class BallSortProvider extends ChangeNotifier {
   init() async {
     SharedPreferences sh = await SharedPreferences.getInstance();
     isMuted = sh.getBool("isMuted") ?? true;
-    tapDialogCount=0;
-    isGameOver=false;
+    tapDialogCount = 0;
+    isGameOver = false;
     playSound();
     // Check if the user can play the selected difficulty level
     if (difficultyLevel == 'medium' && bestScore < 10) {
@@ -194,16 +194,15 @@ class BallSortProvider extends ChangeNotifier {
     notifyListeners();
   }
 
- void checkTapDialogCount(){
+  void checkTapDialogCount() {
     tapDialogCount++;
     notifyListeners();
- }
+  }
 
   void startTimer() {
     if (difficultyLevel == 'easy') {
       remainingTime = 45;
-    }
-    else if (difficultyLevel == 'medium') {
+    } else if (difficultyLevel == 'medium') {
       remainingTime = 90;
     } else if (difficultyLevel == 'hard') {
       remainingTime = 120;
@@ -213,7 +212,6 @@ class BallSortProvider extends ChangeNotifier {
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-
       if (remainingTime > 0) {
         remainingTime--;
         notifyListeners();
@@ -221,14 +219,12 @@ class BallSortProvider extends ChangeNotifier {
         print("Why");
         timer.cancel();
         isGameOver = true;
-        if(isGameOver){
+        if (isGameOver) {
           playLoseSound();
         }
         notifyListeners();
-
       }
     });
-
   }
 
   void setDifficultyLevel(String level) {
@@ -237,6 +233,40 @@ class BallSortProvider extends ChangeNotifier {
     init();
   }
 
+  // void selectTube(int tubeID, Offset position, BuildContext context) {
+  //   if (selectedTubeID == null) {
+  //     selectedTubeID = tubeID;
+  //     selectedBallImagePath =
+  //         getTubeBalls(tubeID).isNotEmpty ? getTubeBalls(tubeID).first : null;
+  //     selectedBallPosition = position;
+  //     isTopBallVisible[tubeID] = !isTopBallVisible[tubeID]!;
+  //     tapCount[tubeID] = 1;
+  //   } else if (selectedTubeID == tubeID) {
+  //     tapCount[tubeID] = (tapCount[tubeID] ?? 0) + 1;
+  //     if (tapCount[tubeID] == 2) {
+  //       isTopBallVisible[tubeID] = true;
+  //       selectedTubeID = null;
+  //       selectedBallImagePath = null;
+  //       selectedBallPosition = null;
+  //       tapCount[tubeID] = 0;
+  //     } else if (tapCount[tubeID] == 3) {
+  //       isTopBallVisible[tubeID] = true;
+  //       selectedTubeID = null;
+  //       selectedBallImagePath = null;
+  //       selectedBallPosition = null;
+  //       tapCount[tubeID] = 0;
+  //     }
+  //   } else {
+  //     if (selectedTubeID != null) {
+  //       moveBall(selectedTubeID!, tubeID, context);
+  //       tapCount[selectedTubeID!] = 0; // Reset tap count for the previous tube
+  //       selectedTubeID = null;
+  //        selectedBallImagePath = null;
+  //        selectedBallPosition = null;
+  //     }
+  //   }
+  //   notifyListeners();
+  // }
   void selectTube(int tubeID, Offset position, BuildContext context) {
     if (selectedTubeID == null) {
       selectedTubeID = tubeID;
@@ -262,11 +292,41 @@ class BallSortProvider extends ChangeNotifier {
       }
     } else {
       if (selectedTubeID != null) {
-        moveBall(selectedTubeID!, tubeID, context);
-        tapCount[selectedTubeID!] = 0; // Reset tap count for the previous tube
-        selectedTubeID = null;
-        selectedBallImagePath = null;
-        selectedBallPosition = null;
+        List<String> toTubeBalls = getTubeBalls(tubeID);
+        int maxBallsPerTube;
+        if (difficultyLevel == 'easy') {
+          maxBallsPerTube = 4;
+        } else if (difficultyLevel == 'medium') {
+          maxBallsPerTube = 5;
+        } else if (difficultyLevel == 'hard') {
+          maxBallsPerTube = 6;
+        } else {
+          maxBallsPerTube = 4; // Default to easy if difficulty level is unknown
+        }
+
+        if (toTubeBalls.length < maxBallsPerTube) {
+          moveBall(selectedTubeID!, tubeID, context);
+          tapCount[selectedTubeID!] =
+              0; // Reset tap count for the previous tube
+          selectedTubeID = null;
+          selectedBallImagePath = null;
+          selectedBallPosition = null;
+        } else {
+          // Notify the user that the destination tube is full
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('The destination tube is full!'),
+            ),
+          );
+          // Restore the ball to its original place with animation
+          Future.delayed(Duration(milliseconds: 100), () {
+            //tapCount[selectedTubeID!] = 0;
+            //selectedTubeID = null;
+            //selectedBallImagePath = null;
+            //selectedBallPosition = null;
+            notifyListeners();
+          });
+        }
       }
     }
     notifyListeners();
@@ -286,14 +346,20 @@ class BallSortProvider extends ChangeNotifier {
     } else {
       maxBallsPerTube = 4; // Default to easy if difficulty level is unknown
     }
+    if (fromTubeBalls.isNotEmpty) {
+      if (toTubeBalls.length < maxBallsPerTube) {
+        String ball = fromTubeBalls.removeAt(0);
+        toTubeBalls.insert(0, ball);
+        isTopBallVisible[fromTubeID] = true;
 
-    if (fromTubeBalls.isNotEmpty && toTubeBalls.length < maxBallsPerTube) {
-      String ball = fromTubeBalls.removeAt(0);
-      toTubeBalls.insert(0, ball);
-      isTopBallVisible[fromTubeID] = true;
-
-      checkWinCondition(context);
-      notifyListeners();
+        checkWinCondition(context);
+        notifyListeners();
+      } else {
+        // Restore the ball to its original place with animation
+        Future.delayed(Duration(milliseconds: 300), () {
+          notifyListeners();
+        });
+      }
     }
   }
 
@@ -340,10 +406,10 @@ class BallSortProvider extends ChangeNotifier {
 
     if (winCount == numberOfTubes - 1) {
       win = true;
-      isGameOver=false;
+      isGameOver = false;
       bestScore++;
       _timer?.cancel();
-playWinSound();
+      playWinSound();
       updateScore();
       notifyListeners();
     }
@@ -367,10 +433,11 @@ playWinSound();
   void restartGame() {
     init();
   }
+
   @override
   void dispose() {
     isGameOver = false;
-    win=false;
+    win = false;
     _timer?.cancel();
     player.dispose();
     player1.dispose();

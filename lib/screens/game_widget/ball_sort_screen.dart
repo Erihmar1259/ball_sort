@@ -135,33 +135,33 @@ class _BallSortScreenState extends State<BallSortScreen> {
                       ],
                     ),
                     SizedBox(height: 20.h),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          print("Click restart");
-                          provider.init();
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 15.w),
-                          width: MediaQuery.of(context).size.width,
-                          height: 60.h,
-                          decoration: const BoxDecoration(
-                            // color: secondaryColor,
-                            // borderRadius: BorderRadius.circular(10.r)
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/game_btn.webp'),
-                              fit: BoxFit.fitWidth,
-                            ),
+                    Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        print("Click restart");
+                        provider.init();
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 15.w),
+                        width: MediaQuery.of(context).size.width,
+                        height: 60.h,
+                        decoration: const BoxDecoration(
+                          // color: secondaryColor,
+                          // borderRadius: BorderRadius.circular(10.r)
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/game_btn.webp'),
+                            fit: BoxFit.fitWidth,
                           ),
-                          child: Center(
-                              child: CustomText(
-                            text: "Restart",
-                            fontSize: 16.sp,
-                            color: whiteColor,
-                          )),
                         ),
+                        child: Center(
+                            child: CustomText(
+                          text: "Restart",
+                          fontSize: 16.sp,
+                          color: whiteColor,
+                        )),
                       ),
                     ),
+                    kSizedBoxH20
                   ],
                 ),
               ),
