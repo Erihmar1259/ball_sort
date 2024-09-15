@@ -4,6 +4,7 @@ import 'package:ball_sort/provider/ball_sort_provider.dart';
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../constants/dimen_const.dart';
 import '../../widgets/custom_text.dart';
@@ -30,8 +31,8 @@ class _BallSortScreenState extends State<BallSortScreen> {
           dismissOnTouchOutside: false,
           dialogType: DialogType.error,
           animType: AnimType.bottomSlide,
-          title: 'Game Over',
-          desc: 'Time is up!',
+          title: 'game_over'.tr,
+          desc: 'time_out'.tr,
           showCloseIcon: true,
           btnOk: GestureDetector(
             onTap: () {
@@ -68,7 +69,7 @@ class _BallSortScreenState extends State<BallSortScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomText(
-              text: "Score",
+              text: "score".tr,
               color: whiteColor,
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
@@ -115,7 +116,7 @@ class _BallSortScreenState extends State<BallSortScreen> {
                   children: [
                     //if (provider.difficultyLevel != 'easy')
                       CustomText(
-                        text: "Time: ${provider.remainingTime}s",
+                        text: "${'time'.tr}: ${provider.remainingTime}s",
                         color: whiteColor,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
@@ -155,7 +156,7 @@ class _BallSortScreenState extends State<BallSortScreen> {
                         ),
                         child: Center(
                             child: CustomText(
-                          text: "Restart",
+                          text: "restart".tr,
                           fontSize: 16.sp,
                           color: whiteColor,
                         )),

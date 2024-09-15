@@ -44,6 +44,9 @@ dependencies:
   webview_flutter: ^4.5.0
   audioplayers: ^5.0.0
   flutter_launcher_icons: ^0.13.1
+  get:
+  get_storage:
+
 
 
 dev_dependencies:

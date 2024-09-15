@@ -4,6 +4,7 @@ import 'package:ball_sort/screens/game_widget/ball_sort_screen.dart';
 import 'package:ball_sort/screens/menu/menu_screen.dart';
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:ball_sort/widgets/custom_circle_loading.dart';
+import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/color_const.dart';
 import '../../constants/dimen_const.dart';
+import '../../languages/enum.dart';
 import '../../utils/global.dart';
 import '../../widgets/custom_text.dart';
 import '../settings/settings_screen.dart';
@@ -60,7 +62,8 @@ class _IntroScreenState extends State<IntroScreen> {
                                   //width: MediaQuery.of(context).size.width * 0.90,
                                   child: WebViewWidget(
                                       controller: WebViewController()
-                                        ..loadHtmlString( Global.policyEn))
+                                        ..loadHtmlString( Global.language == Language.zh.name
+                                            ? Global.policyZh:Global.policyEn))
                               ),
                             ),
                             // Text(Global.policy, style: TextStyle(fontSize: 12)),
@@ -88,7 +91,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                     });
                                   },
                                 ),
-                                CustomText(text:"I agree to the privacy policy.",
+                                CustomText(text:"agree".tr,
                                   fontSize: 11.sp,)
                               ],
                             ),
@@ -112,7 +115,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                   fontSize: 14.sp,
                                   color: Colors.white,
                                 ),
-                                "Accept and Continue",
+                                "accept".tr,
                               ),
                             ),
                           ],
@@ -204,7 +207,7 @@ kSizedBoxH20,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomText(
-                      text: "Your Best Score is ",
+                      text: "your_best_score".tr,
                       color: yellowColor,
                       fontSize: 20.sp,
                       maxLines: 2,
@@ -235,7 +238,7 @@ kSizedBoxH20,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: Center(
                     child: CustomText(
-                      text: "Play Now",
+                      text: "play_now".tr,
                       fontSize: 16.sp,
                       color: whiteColor,
                     )),
@@ -258,7 +261,7 @@ kSizedBoxH20,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: Center(
                     child: CustomText(
-                      text: "Exit",
+                      text: "exit".tr,
                       fontSize: 16.sp,
                       color: whiteColor,
                     )),

@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:ball_sort/screens/game_widget/ball_sort_screen.dart';
 import 'package:ball_sort/screens/settings/settings_screen.dart';
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/utils.dart';
 import 'package:provider/provider.dart';
-
 import '../../constants/color_const.dart';
 import '../../constants/dimen_const.dart';
 import '../../provider/ball_sort_provider.dart';
@@ -37,7 +35,7 @@ class GameMenuScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomText(
-              text: "Score",
+              text: "score".tr,
               color: whiteColor,
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
@@ -84,11 +82,11 @@ class GameMenuScreen extends StatelessWidget {
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
 
-                   CustomText(text: "How to play?",color: whiteColor,),
+                   CustomText(text: "how_to_play".tr,color: whiteColor,),
                    kSizedBoxH10,
-                   CustomText(text: "1. Tap the tube which you want to move the ball.",color: whiteColor,),
-                   CustomText(text: "2. Tap the tube where you want to place the ball.",color: whiteColor,),
-                   CustomText(text: "3. You can only move the ball to the empty tube or the tube that have free space.",color: whiteColor,maxLines: 3,),
+                   CustomText(text: "1. ${"content1".tr}",color: whiteColor,),
+                   CustomText(text: "2. ${"content2".tr}",color: whiteColor,),
+                   CustomText(text: "3. ${"content3".tr}",color: whiteColor,maxLines: 3,),
                  ],
                ),
                ),
@@ -103,14 +101,14 @@ class GameMenuScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   height: 65.h,
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: const AssetImage('assets/images/game_btn.webp'),
+                      image:const DecorationImage(
+                        image:  AssetImage('assets/images/game_btn.webp'),
                         fit: BoxFit.fitWidth,
                       ),
                       borderRadius: BorderRadius.circular(10.r)),
                   child: Center(
                       child: CustomText(
-                        text: "Easy",
+                        text: "easy".tr,
                         fontSize: 16.sp,
                         color: whiteColor,
                       )),
@@ -124,14 +122,13 @@ class GameMenuScreen extends StatelessWidget {
                       context: context,
                       dialogType: DialogType.infoReverse,
                       animType: AnimType.bottomSlide,
-                      title: 'Notice!',
-                      desc: 'You need to score at least 10 to unlock medium level',
-                      btnCancelOnPress: () {
-                        print('cancel');
-                      },
+                      title: 'notice'.tr,
+                      desc: 'unlock_medium'.tr,
+
                       btnOkOnPress: () {
                         print('ok');
                       },
+                      btnOkText: 'ok'.tr,
                     ).show();
                   }else{
                     provider.setDifficultyLevel("medium");
@@ -151,7 +148,7 @@ class GameMenuScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.r)),
                   child: Center(
                       child: CustomText(
-                        text: "Medium",
+                        text: "medium".tr,
                         fontSize: 16.sp,
                         color: whiteColor,
                       )),
@@ -165,14 +162,13 @@ class GameMenuScreen extends StatelessWidget {
                       context: context,
                       dialogType: DialogType.infoReverse,
                       animType: AnimType.bottomSlide,
-                      title: 'Notices',
-                      desc: 'You need to score at least 20 to unlock hard level',
-                      btnCancelOnPress: () {
-                        print('cancel');
-                      },
+                      title: 'notice'.tr,
+                      desc: 'unlock_hard'.tr,
+
                       btnOkOnPress: () {
                         print('ok');
                       },
+                      btnOkText: 'ok'.tr
                     ).show();
                  }else{
                    provider.setDifficultyLevel("hard");
@@ -191,7 +187,7 @@ class GameMenuScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.r)),
                   child: Center(
                       child: CustomText(
-                        text: "Hard",
+                        text: "hard".tr,
                         fontSize: 16.sp,
                         color: whiteColor,
                       )),

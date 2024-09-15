@@ -1,7 +1,9 @@
+import 'package:ball_sort/languages/enum.dart';
 import 'package:ball_sort/utils/global.dart';
 import 'package:ball_sort/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants/color_const.dart';
@@ -16,7 +18,7 @@ class PrivacyPolicy extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: CustomText(
-          text: "Privacy Policy",
+          text: "policy".tr,
           color: whiteColor,
           fontSize: 20.sp,
           fontWeight: FontWeight.bold,
@@ -48,7 +50,7 @@ class PrivacyPolicy extends StatelessWidget {
           child: Padding(
             padding:  EdgeInsets.only(top: 90.h,left: 10.w,right: 10.w),
             child: Text(
-              Global.policy,
+            Global.language==Language.zh.name? Global.policyCn:  Global.policy,
               style:  GoogleFonts.audiowide(
                 color: whiteColor,
                 fontSize: 14.sp,

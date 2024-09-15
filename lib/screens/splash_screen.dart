@@ -1,6 +1,7 @@
 import 'package:ball_sort/utils/screen_navigation_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/utils.dart';
 import '../constants/color_const.dart';
 import '../constants/dimen_const.dart';
 import '../widgets/custom_circle_loading.dart';
@@ -45,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CustomText(text: "Please wait",fontSize: 20.sp,color: whiteColor,),
+                  CustomText(text: "please_wait".tr,fontSize: 20.sp,color: whiteColor,),
                   kSizedBoxW10,
                   const CustomCircleLoading()
                 ],
